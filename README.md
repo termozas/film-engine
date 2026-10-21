@@ -242,7 +242,6 @@ The only secret is `ELEVENLABS_API_KEY`, read from the environment and never wri
 - Never "it" for the product. Say the product's name, or rephrase so a person is the subject ("you get", "the team sees").
 - No internal version names (engine v3, beta, the new model) in the voice or on screen.
 - Every number on screen carries a plain-English source line: "Source: 1,200 support tickets from our helpdesk, January to June 2026", not a file path. Label estimates as estimates.
-- Back every claim: say what was measured and on how much ("12 teams over 3 months"). Never invent a saving, a customer or a testimonial.
 - Spell numbers the way they should be spoken ("thirty-eight", "sixty thousand dollars"); voices misread digits.
 - No hype words, no slogan title cards. Plain, specific and confident.
 
