@@ -21,7 +21,7 @@ kit/
   make_pad.sh              a quiet music pad (optional; a licensed track sounds better)
   make_sfx.sh              soft click and key sounds, made from filtered noise
   run.sh                   the whole chain for one film
-  qa/lint_script.py        script check: "it", version names, sources, banned words
+  qa/lint_script.py        script check: "it", sources, banned words
   qa/stt_check.py          speech-to-text check: takes and master must match the script word for word
   qa/sheet.sh              contact sheets
   qa/check_secrets.sh      before sharing: keys, .env files, media, machine paths, private terms
@@ -240,7 +240,6 @@ The only secret is `ELEVENLABS_API_KEY`, read from the environment and never wri
 **Narration**
 - One sentence per scene. A second sentence usually means a second scene.
 - Never "it" for the product. Say the product's name, or rephrase so a person is the subject ("you get", "the team sees").
-- No internal version names (engine v3, beta, the new model) in the voice or on screen.
 - Every number on screen carries a plain-English source line: "Source: 1,200 support tickets from our helpdesk, January to June 2026", not a file path. Label estimates as estimates.
 - Spell numbers the way they should be spoken ("thirty-eight", "sixty thousand dollars"); voices misread digits.
 - No hype words, no slogan title cards. Plain, specific and confident.
