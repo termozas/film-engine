@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tally: invoice check</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  /* A made-up product for the example film. All names and numbers on this page are invented. */
+  :root { --ink: #172033; --navy: #165CA8; --slate: #64748B; --line: #E2E8F0; --wash: #F3F6FA; --amber: #B45309; --amber-wash: #FFF7EB; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif; color: var(--ink); background: var(--wash); }
+  header { display: flex; align-items: center; gap: 12px; padding: 18px 40px; background: #fff; border-bottom: 1px solid var(--line); }
+  .logo { width: 30px; height: 30px; border-radius: 8px; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 700; }
+  header b { font-size: 19px; }
+  header nav { margin-left: auto; display: flex; gap: 26px; color: var(--slate); font-size: 15px; }
+  main { max-width: 860px; margin: 44px auto; padding: 0 24px; }
+  h1 { font-size: 30px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .lede { color: var(--slate); margin: 0 0 28px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 26px 28px; }
+  #check-form { display: flex; gap: 14px; align-items: end; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--slate); margin-bottom: 6px; letter-spacing: 0.02em; }
+  .field { flex: 1; }
+  input { width: 100%; font: inherit; font-size: 18px; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 10px; outline: none; }
+  input:focus { border-color: var(--navy); box-shadow: 0 0 0 4px rgba(22,92,168,0.12); }
+  button { font: inherit; font-weight: 600; font-size: 17px; padding: 13px 26px; border: 0; border-radius: 10px; background: var(--navy); color: #fff; cursor: pointer; }
+  #result { margin-top: 26px; display: none; }
+  #result.on { display: block; animation: rise .45s cubic-bezier(.2,.7,.2,1); }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .summary { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; }
+  .summary h2 { margin: 0; font-size: 22px; }
+  .pill { font-size: 13px; font-weight: 700; color: var(--amber); background: var(--amber-wash); border-radius: 999px; padding: 3px 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  td { padding: 13px 12px; border-bottom: 1px solid var(--line); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.flag td { background: var(--amber-wash); }
+  tr.flag td:first-child { color: var(--amber); font-weight: 600; }
+  tr.flag { cursor: pointer; }
+  tr.detail td { background: #fff; color: var(--slate); font-size: 15px; padding: 10px 12px 16px 36px; }
+  tr.detail { display: none; }
+  tr.detail.on { display: table-row; }
+</style>
+</head>
+<body>
+<header><div class="logo">T</div><b>Tally</b><nav><span>Invoices</span><span>Vendors</span><span>Settings</span></nav></header>
+<main>
+  <h1>Check an invoice</h1>
+  <p class="lede">Tally compares each invoice line with the purchase order and the delivery note.</p>
+  <section class="card">
+    <form id="check-form">
+      <div class="field"><label for="vendor">Vendor</label><input id="vendor" autocomplete="off" placeholder="Vendor name"></div>
+      <button id="check" type="submit">Check</button>
+    </form>
+    <div id="result">
+      <div class="summary"><h2 id="who">Invoice 1042</h2><span class="pill">3 lines don't match</span></div>
+      <table id="lines">
+        <thead><tr><th>Item</th><th class="num">Invoice</th><th class="num">Purchase order</th><th class="num">Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Copy paper, A4, 5 boxes</td><td class="num">5</td><td class="num">5</td><td class="num">$120.00</td></tr>
+          <tr class="flag" id="row-toner"><td>Toner cartridges</td><td class="num">44</td><td class="num">40</td><td class="num">$528.00</td></tr>
+          <tr class="detail" id="detail-toner"><td colspan="4">Purchase order 7731 says 40 cartridges at $12.00. The invoice bills 44. The delivery note shows 40 received.</td></tr>
+          <tr><td>Desk lamps</td><td class="num">6</td><td class="num">6</td><td class="num">$210.00</td></tr>
+          <tr class="flag"><td>Shipping</td><td class="num">1</td><td class="num">0</td><td class="num">$45.00</td></tr>
+          <tr class="flag"><td>Monitor stands</td><td class="num">$39.00</td><td class="num">$34.00</td><td class="num">$390.00</td></tr>
+          <tr><td>Cable ties, 100 pack</td><td class="num">10</td><td class="num">10</td><td class="num">$32.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<script>
+  document.getElementById('check-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = document.getElementById('vendor').value.trim() || 'Northwind Supply';
+    document.getElementById('who').textContent = 'Invoice 1042 · ' + v;
+    document.getElementById('result').classList.add('on');
+  });
+  document.getElementById('row-toner').addEventListener('click', () => document.getElementById('detail-toner').classList.toggle('on'));
+</script>
+</body>
+</html>

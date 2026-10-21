@@ -1,0 +1,5 @@
+# open-source voice (TTS_BACKEND=kokoro): Kokoro-82M plus faster-whisper for word timings and the STT check
+-r requirements.txt
+kokoro>=0.9.4
+soundfile>=0.12
+faster-whisper>=1.0

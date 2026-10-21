@@ -1,0 +1,4 @@
+# capture (kit/shoot.py). After installing: python -m playwright install chromium
+playwright>=1.44
+# optional: local speech-to-text check without an ElevenLabs key (kit/qa/stt_check.py)
+# faster-whisper>=1.0

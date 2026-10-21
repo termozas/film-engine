@@ -1,0 +1,64 @@
+[
+ {
+  "id": "p1",
+  "card": "number",
+  "label": "",
+  "tail": 0.8,
+  "marks": {
+   "count": "four hours"
+  },
+  "props": {
+   "kicker": "Example",
+   "title": "Time spent checking invoices by hand",
+   "stats": [
+    {
+     "value": 4,
+     "suffix": " h",
+     "label": "a week, per team",
+     "mark": "count"
+    }
+   ],
+   "source": "Invented figure for this demo film.\nIn a real film this line names where the number comes from, in plain English."
+  },
+  "text": "Small teams spend about four hours a week checking invoices by hand."
+ },
+ {
+  "id": "s02",
+  "label": "Check an invoice",
+  "tail": 1.5,
+  "tags": [
+   {
+    "at": "vendor's name",
+    "dur": 3.0,
+    "text": "Demo data: invented vendor and invoice"
+   }
+  ],
+  "text": "Type the vendor's name and press Check."
+ },
+ {
+  "id": "s03",
+  "label": "Lines that don't match",
+  "tail": 0.9,
+  "tags": [
+   {
+    "at": "three lines",
+    "dur": 3.2,
+    "text": "Demo data: invented invoice"
+   }
+  ],
+  "text": "Tally marks the three lines that don't match the purchase order."
+ },
+ {
+  "id": "p4",
+  "card": "cta",
+  "label": "",
+  "tail": 2.4,
+  "props": {
+   "brand": "Tally",
+   "title": "Check your next invoice with Tally.",
+   "sub": "Invoice checks against the purchase order",
+   "footnote": "Example film made with Film Engine. The product, vendor and numbers are invented."
+  },
+  "text": "Check your next invoice with Tally."
+ }
+]
