@@ -245,10 +245,6 @@ The only secret is `ELEVENLABS_API_KEY`, read from the environment and never wri
 - Spell numbers the way they should be spoken ("thirty-eight", "sixty thousand dollars"); voices misread digits.
 - No hype words, no slogan title cards. Plain, specific and confident.
 
-**Privacy**
-- Never film real customer data without permission. Use invented demo data, and say so in a tag ("Demo data: invented").
-- Put real names and other private terms in `banned` in `film.json`, and keep private files out of the film folder.
-
 **QA**
 - Speech-to-text of every take and of the finished master must match the script word for word.
 - Look at the contact sheets of the raw clips and of the final film before anyone else sees the film.
@@ -316,11 +312,11 @@ These notes are for Claude Code (or another coding agent) working in this kit on
 1. **Read first:** this README, `examples/hello-demo/` (all files), `kit/cap.py` (the Scene API and helpers) and the comment at the top of `src/Cards.tsx`.
 2. **Check the setup** before anything else: `node -v` (20+), `python --version` (3.11+), `ffmpeg -version`, `python -c "import playwright"`, and whether `ELEVENLABS_API_KEY` is set (`[ -n "$ELEVENLABS_API_KEY" ] && echo set`). Never print, log or write the key. If the key is missing, say so and offer `TTS_BACKEND=kokoro` or `--no-voice`.
 3. **Prove the pipeline works** on this machine with `bash kit/run.sh examples/hello-demo --no-voice` before starting a real film.
-4. **New film:** copy `examples/hello-demo` to `films/<name>/`. Ask for the audience, the one action the film should lead to, the URL and port of the app, how to log in, which records are public or invented, and the source of every number. Do not guess numbers or sources.
+4. **New film:** copy `examples/hello-demo` to `films/<name>/`. Ask for the audience, the one action the film should lead to, the URL and port of the app, how to log in, and the source of every number. Do not guess numbers or sources.
 5. **Script:** one sentence per scene; open with what the viewer gets, show the product in footage, end with one clear next step; most demos work best between 30 and 120 seconds. Run `python kit/qa/lint_script.py films/<name>` until there are no errors, and show the script to the person before generating voice.
 6. **Voice:** `python kit/tts.py films/<name>`, then `python kit/qa/stt_check.py films/<name>`. Fix mismatches by respelling and regenerating only those takes (`python kit/tts.py films/<name> <id>`).
 7. **Shoot:** find stable selectors in the app first (a short Playwright script that prints ids, roles and headings). Write one function per footage scene. Shoot with `--draft` while working out cues, then at full quality. Never stop processes you did not start; ask which port to use.
 8. **Camera:** run `python kit/build_data.py films/<name>` after every shoot. Fix every `camera:` warning by deleting or moving zoom cues, then shoot that scene again. Never ship with camera warnings.
 9. **Render, finish, QA:** render to `out/<name>/render-vN.mp4`, finish to `out/<name>/<name>-vN.mp4`, make contact sheets of the master and of each raw clip, then look at the sheets yourself (read the PNGs) and run the STT check on the master. Report anything private or wrong you see.
-10. **Hard rules:** follow "Rules for good demo films" above. Never film real customer data without permission. Every on-screen number has a plain-English source. Never overwrite a finished file. Run `kit/qa/check_secrets.sh` before anything leaves the machine, and never upload or send files unless asked.
+10. **Hard rules:** follow "Rules for good demo films" above. Every on-screen number has a plain-English source. Never overwrite a finished file. Run `kit/qa/check_secrets.sh` before anything leaves the machine, and never upload or send files unless asked.
 11. **Report back** with the master path, its length, the loudness line from `finish.sh`, the STT result, the camera check result, and any rule you could not meet.
