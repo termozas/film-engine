@@ -11,7 +11,7 @@ import { fontFamily, INK, BRAND, SLATE, BACKDROP } from './theme';
 export const FPS = 30;
 export const W = 1920;
 export const H = 1200;
-const INTRO = Number(CARDS?.intro?.dur ?? 0);   // title card before the first scene (0 = none: the hook opens the film)
+const INTRO = Number(CARDS?.intro?.dur ?? 0);   // title card before the first scene (0 = none: the first scene opens the film)
 const OUTRO = Number(CARDS?.outro?.dur ?? 0);   // end card after the last scene (0 = none: a cta card ends the film)
 const DIP = 0.18;            // scenes butt-join; each dips to the backdrop for a moment instead of a muddy crossfade
 const CSS_W = VIEW[0];       // the browser's CSS size; the clip is its 2x capture
@@ -127,7 +127,7 @@ const Label: React.FC<{ text: string; t: number }> = ({ text, t }) => {
   );
 };
 
-/* Source tag: a lower third over footage ("Demo data: public records", "Source: ...") */
+/* Source tag: a lower third over footage ("Demo data: invented", "Source: ...") */
 const SourceTag: React.FC<{ tags: readonly { t0: number; t1: number; text: string }[]; t: number }> = ({ tags, t }) => {
   const g = (tags || []).find((x) => t >= x.t0 && t <= x.t1);
   if (!g) return null;

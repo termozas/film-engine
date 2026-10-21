@@ -1,6 +1,6 @@
 # Film Engine
 
-Narrated product demo films, built from code: a voice track with word timings, a browser capture whose clicks and zooms fire on the narrator's words, a camera pass that follows a few rules, a Remotion edit with motion blur, word-by-word captions, interface sounds, ducked music and animated number cards, and a finishing pass. One small example film is included and runs without any client app.
+Narrated product demo films, built from code: a voice track with word timings, a browser capture whose clicks and zooms fire on the narrator's words, a camera pass that follows a few rules, a Remotion edit with motion blur, word-by-word captions, interface sounds, ducked music and animated number cards, and a finishing pass. One small example film is included and runs without any other app.
 
 ## What is in the folder
 
@@ -21,7 +21,7 @@ kit/
   make_pad.sh              a quiet music pad (optional; a licensed track sounds better)
   make_sfx.sh              soft click and key sounds, made from filtered noise
   run.sh                   the whole chain for one film
-  qa/lint_script.py        script check: "it", version names, unit cost, sources, banned words
+  qa/lint_script.py        script check: "it", version names, sources, banned words
   qa/stt_check.py          speech-to-text check: takes and master must match the script word for word
   qa/sheet.sh              contact sheets
   qa/check_secrets.sh      before sharing: keys, .env files, media, machine paths, private terms
@@ -174,7 +174,7 @@ All of these are on by default and come from data the pipeline already has, so t
 | `props` | The card's content. See the comment at the top of `src/Cards.tsx` and `src/Pipeline.tsx`. |
 | `marks` | Card animation triggers: name → a phrase from the text. The counter starts when the phrase is spoken. |
 
-`cards.json` holds optional `intro` and `outro` title cards (`kicker`, `title`, `sub`, `dur`); a `dur` of 0 turns them off. The example has none: the hook card opens the film and the cta card ends the film.
+`cards.json` holds optional `intro` and `outro` title cards (`kicker`, `title`, `sub`, `dur`); a `dur` of 0 turns them off. The example has none: its first card opens the film and the cta card ends the film.
 
 ## How to write cues
 
@@ -216,7 +216,7 @@ Each film's `film.json` overrides the defaults in `kit/config.py`; environment v
 | `vo`, `clips` | `VO_DIR`, `CLIPS_DIR` | `vo`, `clips` (use `vo2`, `clips2` to keep an older cut intact) |
 | `dpr` | `DPR` | `2` (`DRAFT=1` or `--draft` gives 1) |
 | `names` | | product and place names that help local speech-to-text spell them |
-| `banned` | | words that must never appear in the film folder (client names, code names) |
+| `banned` | | words that must never appear in the film folder (customer names, code names) |
 | `allow_it` | | scene ids where "it" does not refer to the product |
 | `music` | | `pad.mp3` in `public/`, skipped when missing; ducks under the voice |
 | `sfx` | | `true`: click and key sounds from `public/sfx/` |
@@ -224,7 +224,7 @@ Each film's `film.json` overrides the defaults in `kit/config.py`; environment v
 
 The only secret is `ELEVENLABS_API_KEY`, read from the environment and never written to a file by the kit. `CHROMIUM_PATH` points the capture at another Chromium; `STATE` loads a Playwright storage-state file (a logged-in session) for apps behind a login.
 
-## The rules we learned
+## Rules for good demo films
 
 **Camera**
 - Pull back before every click outside the zoomed element, so the viewer sees what gets clicked. `build_data.py` adds that pull-back one second before the click.
@@ -242,15 +242,13 @@ The only secret is `ELEVENLABS_API_KEY`, read from the environment and never wri
 - Never "it" for the product. Say the product's name, or rephrase so a person is the subject ("you get", "the team sees").
 - No internal version names (engine v3, beta, the new model) in the voice or on screen.
 - Every number on screen carries a plain-English source line: "Source: 1,200 support tickets from our helpdesk, January to June 2026", not a file path. Label estimates as estimates.
-- Never show prospects your own unit cost (compute, API fees, cost per run). Show their cost and their savings.
-- Frame backtests honestly: say how many projects, that the answers were hidden and compared afterwards, and how matches were counted ("one project, matched by hand"). Never invent a saving, a customer or a testimonial.
+- Back every claim: say what was measured and on how much ("12 teams over 3 months"). Never invent a saving, a customer or a testimonial.
 - Spell numbers the way they should be spoken ("thirty-eight", "sixty thousand dollars"); voices misread digits.
 - No hype words, no slogan title cards. Plain, specific and confident.
 
 **Privacy**
-- Never film a client's drawings, documents or data without written permission. Film public records or invented demo data, and say so in a tag ("Demo data: public records").
-- Results from a private project may appear only as anonymous numbers.
-- Put client names, addresses and owner names in `banned` in `film.json`, and keep private files out of the film folder.
+- Never film real customer data without permission. Use invented demo data, and say so in a tag ("Demo data: invented").
+- Put real names and other private terms in `banned` in `film.json`, and keep private files out of the film folder.
 
 **QA**
 - Speech-to-text of every take and of the finished master must match the script word for word.
@@ -273,21 +271,21 @@ The first run downloads the Kokoro model, a small spaCy English model and the Wh
 **Picking a voice.** Set `kokoro_voice` in `film.json` or `KOKORO_VOICE`. The prefix sets accent and gender: `af_` American female, `am_` American male, `bf_` British female, `bm_` British male. The model card's [voice list](https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md) grades each voice; the strongest American English voices are `af_heart` (A) and `af_bella` (A-), and the strongest British one is `bf_emma` (B-). Most male voices are graded C+ or lower. `kokoro_speed` (default 0.92) slows or speeds the read. Make one take with each candidate voice and listen before you decide.
 
 **Honest notes**
-- Quality is a step below ElevenLabs v4: flatter emphasis, less natural pauses, and the occasional odd stress on a long sentence. Fine for drafts, internal reviews and many demos; for a film that goes to buyers, compare against an ElevenLabs take first.
+- Quality is a step below ElevenLabs v4: flatter emphasis, less natural pauses, and the occasional odd stress on a long sentence. Fine for drafts, internal reviews and many demos; for a published film, compare against an ElevenLabs take first.
 - Check how numbers, names and abbreviations are spoken. Spell them the way they should sound, and run the STT check.
 - Local speech-to-text can mishear invented product names ("Tally" heard as "Tali"). List those names in `names` in `film.json`; the kit passes them to Whisper as a hint. If the check still flags a name, listen to that take yourself.
 - Alignment prints a warning when fewer than 85% of the script's words were heard as written. That usually means a mispronounced or skipped word: listen to the take.
 
 **Licences of open-source voice models** (checked 21 October 2026; a licence can change, so read the model card again before you publish)
 
-| Model | Code | Weights | For sales films |
+| Model | Code | Weights | Commercial use |
 |---|---|---|---|
 | [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) ([code](https://github.com/hexgrad/kokoro)) | Apache-2.0 | Apache-2.0 | Yes. The kit's open-source backend. |
 | [Chatterbox](https://github.com/resemble-ai/chatterbox) ([weights](https://huggingface.co/ResembleAI/chatterbox)) | MIT | MIT | Allowed. Every output carries Resemble AI's imperceptible Perth watermark. |
 | [Piper](https://github.com/OHF-Voice/piper1-gpl) ([voices](https://huggingface.co/rhasspy/piper-voices)) | GPL-3.0 | Voices repository lists MIT, but each voice's `MODEL_CARD` points to its own dataset licence (for example, `en_US-lessac` points to the [Blizzard 2013 licence](https://www.cstr.ed.ac.uk/projects/blizzard/2013/lessac_blizzard2013/license.html)) | Only after you read the licence of the exact voice. |
 | [Orpheus](https://github.com/canopyai/Orpheus-TTS) ([weights](https://huggingface.co/canopylabs/orpheus-3b-0.1-ft)) | Apache-2.0 | Model card lists Apache-2.0; access is gated; built on a Llama 3B backbone | Read the model card and its terms before commercial use. |
-| [XTTS-v2](https://huggingface.co/coqui/XTTS-v2) | | Coqui Public Model License: "allows only non-commercial use of a machine learning model and its outputs" | **No.** Non-commercial model licence: avoid for sales videos. |
-| [F5-TTS](https://huggingface.co/SWivid/F5-TTS) | | CC BY-NC 4.0 | **No.** Non-commercial model licence: avoid for sales videos. |
+| [XTTS-v2](https://huggingface.co/coqui/XTTS-v2) | | Coqui Public Model License: "allows only non-commercial use of a machine learning model and its outputs" | **No.** Non-commercial model licence: avoid for commercial videos. |
+| [F5-TTS](https://huggingface.co/SWivid/F5-TTS) | | CC BY-NC 4.0 | **No.** Non-commercial model licence: avoid for commercial videos. |
 
 ## Licences of the tools in the kit
 
@@ -301,7 +299,7 @@ The first run downloads the Kokoro model, a small spaCy English model and the Wh
 bash kit/qa/check_secrets.sh <folder> ~/private-terms.txt
 ```
 
-The check fails on key-shaped strings, `.env` files, audio and video files, dependency and cache folders, absolute paths to someone's machine, and any word in the terms file (one per line: client names, addresses, owner names). Keep the terms file outside the folder you check.
+The check fails on key-shaped strings, `.env` files, audio and video files, dependency and cache folders, absolute paths to someone's machine, and any word in the terms file (one per line: customer names, addresses, owner names). Keep the terms file outside the folder you check.
 
 ## Troubleshooting
 
@@ -320,10 +318,10 @@ These notes are for Claude Code (or another coding agent) working in this kit on
 2. **Check the setup** before anything else: `node -v` (20+), `python --version` (3.11+), `ffmpeg -version`, `python -c "import playwright"`, and whether `ELEVENLABS_API_KEY` is set (`[ -n "$ELEVENLABS_API_KEY" ] && echo set`). Never print, log or write the key. If the key is missing, say so and offer `TTS_BACKEND=kokoro` or `--no-voice`.
 3. **Prove the pipeline works** on this machine with `bash kit/run.sh examples/hello-demo --no-voice` before starting a real film.
 4. **New film:** copy `examples/hello-demo` to `films/<name>/`. Ask for the audience, the one action the film should lead to, the URL and port of the app, how to log in, which records are public or invented, and the source of every number. Do not guess numbers or sources.
-5. **Script:** one sentence per scene; a hook card first, footage in the middle, proof cards, a cta card last; 75 to 110 seconds for a sales film. Run `python kit/qa/lint_script.py films/<name>` until there are no errors, and show the script to the person before generating voice.
+5. **Script:** one sentence per scene; open with what the viewer gets, show the product in footage, end with one clear next step; most demos work best between 30 and 120 seconds. Run `python kit/qa/lint_script.py films/<name>` until there are no errors, and show the script to the person before generating voice.
 6. **Voice:** `python kit/tts.py films/<name>`, then `python kit/qa/stt_check.py films/<name>`. Fix mismatches by respelling and regenerating only those takes (`python kit/tts.py films/<name> <id>`).
 7. **Shoot:** find stable selectors in the app first (a short Playwright script that prints ids, roles and headings). Write one function per footage scene. Shoot with `--draft` while working out cues, then at full quality. Never stop processes you did not start; ask which port to use.
 8. **Camera:** run `python kit/build_data.py films/<name>` after every shoot. Fix every `camera:` warning by deleting or moving zoom cues, then shoot that scene again. Never ship with camera warnings.
 9. **Render, finish, QA:** render to `out/<name>/render-vN.mp4`, finish to `out/<name>/<name>-vN.mp4`, make contact sheets of the master and of each raw clip, then look at the sheets yourself (read the PNGs) and run the STT check on the master. Report anything private or wrong you see.
-10. **Hard rules:** follow "The rules we learned" above. Never film client data without written permission. Never show the product's own unit cost. Every on-screen number has a plain-English source. Never overwrite a finished file. Run `kit/qa/check_secrets.sh` before anything leaves the machine, and never upload or send files unless asked.
+10. **Hard rules:** follow "Rules for good demo films" above. Never film real customer data without permission. Every on-screen number has a plain-English source. Never overwrite a finished file. Run `kit/qa/check_secrets.sh` before anything leaves the machine, and never upload or send files unless asked.
 11. **Report back** with the master path, its length, the loudness line from `finish.sh`, the STT result, the camera check result, and any rule you could not meet.

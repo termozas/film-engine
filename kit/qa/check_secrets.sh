@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Before you share a folder or zip: fail if it holds a real API key, a .env file, generated media or private terms.
 #   kit/qa/check_secrets.sh <folder> [private-terms.txt]
-# private-terms.txt: one word or phrase per line (client names, addresses, owner names, private paths). Keep that file
+# private-terms.txt: one word or phrase per line (customer names, addresses, private paths). Keep that file
 # outside the folder you check, or the check finds the terms in it.
 set -uo pipefail
 DIR="${1:?usage: check_secrets.sh <folder> [private-terms.txt]}"; TERMS="${2:-}"
@@ -39,7 +39,7 @@ if [ -n "$TERMS" ]; then
     [ -z "$t" ] && continue
     h=$(grep -rnIiF "${EXC[@]}" -e "$t" "$DIR" 2>/dev/null)
     [ -n "$h" ] && { say "private term '$t':"; echo "$h"; }
-    f=$(find "$DIR" -iname "*$t*" -not -path "*/node_modules/*")
+    f=$(find "$DIR" -iname "*$t*" -not -path "*/node_modules/*" -not -path "*/.git/*")
     [ -n "$f" ] && { say "file name with private term '$t':"; echo "$f"; }
   done < "$TERMS"
 fi

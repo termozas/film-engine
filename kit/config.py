@@ -44,7 +44,7 @@ DEFAULTS = {
     "sfx": True,                             # click and key sounds from public/sfx/ (kit/make_sfx.sh)
     "captions": "words",                     # "words" (each word lights up as spoken), "plain" or "none"
     "names": [],                             # product and place names, to prime local speech-to-text ("Tally")
-    "banned": [],                            # extra words that must never appear (client names, code names)
+    "banned": [],                            # extra words that must never appear (customer names, code names)
     "allow_it": [],                          # scene ids where "it" is fine (it does not refer to the product)
 }
 

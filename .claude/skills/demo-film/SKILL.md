@@ -1,6 +1,6 @@
 ---
 name: demo-film
-description: Make a narrated product demo film with this kit (voice with word timings, cue-synced browser capture, camera rules, Remotion edit, finish, QA). Use when asked to make, re-cut, fix or check a demo film, sales video or product walkthrough in this folder.
+description: Make a narrated product demo film with this kit (voice with word timings, cue-synced browser capture, camera rules, Remotion edit, finish, QA). Use when asked to make, re-cut, fix or check a demo film, product video or walkthrough in this folder.
 ---
 
 # Demo film
@@ -19,4 +19,4 @@ Order of work, from the kit root:
 8. Render, finish, contact sheets, STT on the master (or `bash kit/run.sh films/<name>` for steps 4 to 8). Look at the contact sheets yourself.
 9. Before anything leaves the machine: `bash kit/qa/check_secrets.sh <folder> <private-terms file>`.
 
-Hard rules: never film client data without written permission; no "it" for the product; no internal version names; every on-screen number has a plain-English source; never show the product's own unit cost; never overwrite a finished file; never stop a process you did not start; never upload or send anything unless asked.
+Hard rules: never film real customer data without permission; no "it" for the product; no internal version names; every on-screen number has a plain-English source; never overwrite a finished file; never stop a process you did not start; never upload or send anything unless asked.
