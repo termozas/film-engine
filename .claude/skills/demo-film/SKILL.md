@@ -19,4 +19,4 @@ Order of work, from the kit root:
 8. Render, finish, contact sheets, STT on the master (or `bash kit/run.sh films/<name>` for steps 4 to 8). Look at the contact sheets yourself.
 9. Before anything leaves the machine: `bash kit/qa/check_secrets.sh <folder> <private-terms file>`.
 
-Hard rules: no "it" for the product; every on-screen number has a plain-English source; never overwrite a finished file; never stop a process you did not start; never upload or send anything unless asked.
+Hard rules: no "it" for the product; no AI-sounding phrasing (see the narration rules); every on-screen number has a plain-English source; never overwrite a finished file; never stop a process you did not start; never upload or send anything unless asked.

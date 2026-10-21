@@ -8,6 +8,7 @@ Errors (exit 1):
   - a card that shows a number without a plain-English "source" line, or a source that is a file path
   - any word from film.json "banned" (customer names, code names), anywhere in the film folder's text files
 Warnings:
+  - AI-sounding phrasing ("delve", "leverage", "not just X, but Y", em dashes...); rewrite it the way a person would say it
   - more than one sentence in a scene; digits in narration (spell numbers so the voice reads them right);
     hype words; claims nobody can back ("guaranteed", "never misses").
 """
@@ -24,6 +25,14 @@ from textnorm import strip_breaks  # noqa: E402
 IT = re.compile(r"\b(it|it's|it’s|its|itself)\b", re.I)
 HYPE = re.compile(r"\b(revolutionary|game[- ]chang\w*|ai[- ]powered|seamless\w*|cutting[- ]edge|supercharg\w*|unlock\w*|effortless\w*|next[- ]gen\w*|magic\w*|10x)\b", re.I)
 OVERCLAIM = re.compile(r"\b(guarantee\w*|never miss\w*|always catch\w*|100 ?%|perfect accuracy|catches everything)\b", re.I)
+AI_WORDS = re.compile(r"\b(delv\w*|leverag\w*|robust\w*|streamlin\w*|elevat\w*|empower\w*|harness\w*|unleash\w*|"
+                      r"revolutioni[sz]\w*|transformative|pivotal|crucial|paramount|testament|tapestry|realm|landscape|"
+                      r"embark\w*|foster\w*|holistic|synerg\w*|meticulous\w*|navigat\w* the|dive into|deep dive|"
+                      r"fast-paced|ever-evolving|today's (digital |modern )?world|look no further|say goodbye to|"
+                      r"to the next level|at the end of the day|in a world where|whether you're|imagine a world|"
+                      r"designed to help|(?:isn't|is not|it's not|not) just [^.,]{1,40},? but|not only [^.]{1,60} but also|"
+                      r"here's the thing|let's be honest|the best part)\b", re.I)
+DASH = re.compile(r"—|–| -- ")
 NUMWORD = re.compile(r"\d|\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|percent)\b", re.I)
 PATHY = re.compile(r"(\w/\w.*\.(md|json|py|csv|txt|ts))|(\.(md|json|py|csv)\b)")
 
@@ -60,6 +69,9 @@ def main():
             errors.append(f"{sid}: \"{IT.search(text).group()}\" in narration; name the product or rephrase (or add {sid} to allow_it)")
         for where, t in [("narration", text)] + [("screen", x) for x in screen]:
             if HYPE.search(t): warns.append(f"{sid}: hype word on {where}: {HYPE.search(t).group()!r}")
+            ai = sorted({m.group().lower() for m in AI_WORDS.finditer(t)})
+            if ai: warns.append(f"{sid}: AI-sounding phrasing on {where}: {', '.join(repr(x) for x in ai)}; say it the way a person would")
+            if DASH.search(t): warns.append(f"{sid}: dash on {where}; use a comma, a colon or two sentences")
             if OVERCLAIM.search(t): warns.append(f"{sid}: claim a test cannot back on {where}: {OVERCLAIM.search(t).group()!r}")
         n = len(re.findall(r"[.?!](\s|$)", text))
         if n > 1: warns.append(f"{sid}: {n} sentences; aim for one sentence per scene")
